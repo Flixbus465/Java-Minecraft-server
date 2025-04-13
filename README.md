@@ -1,89 +1,181 @@
-Minecraft Java Server erstellen (Vanilla / Paper)
-✅ Voraussetzungen:
+# 🧱 Minecraft Java Server unter Windows
 
-PC mit Windows/Linux/Mac (am besten 24/7 an)
-Installiertes Java (empfohlen: Java 17 oder höher)
-Stabile Internetverbindung
-Zugriff auf den Router (für Portfreigabe)
-Minecraft Java Edition
+Willkommen! Diese Anleitung zeigt dir Schritt für Schritt, wie du unter **Windows** einen Minecraft Java Server einrichtest – inklusive Java-Installation, Server-Download, Portfreigabe und Startskript. Ideal für Freunde, LAN-Partys oder deinen eigenen Online-Server.
 
-🔧 Schritt 1: Java installieren
-Besuche: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+---
 
-Lade Java 17 (oder neuer) herunter und installiere es.
-Überprüfe mit:
+## 📦 Voraussetzungen
 
-bash
+- Windows 10 oder 11
+- Java 17 oder neuer
+- Eine stabile Internetverbindung
+- Zugriff auf deinen Router zur Portfreigabe
+- Optional: `start.bat`-Datei für einfaches Starten
+
+---
+
+## 🔧 Java 17 installieren
+
+1. Lade das JDK von der offiziellen Seite herunter:  
+   👉 [Java 17 von Oracle](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+
+2. Wähle dein System (Windows x64 Installer) und installiere es.
+
+3. Starte danach die Eingabeaufforderung (`Win + R` → `cmd`) und prüfe:
+```cmd
 java -version
+```
 
-📂 Schritt 2: Server-Dateien herunterladen
-Vanilla:
-Gehe auf https://www.minecraft.net/de-de/download/server
-Lade server.jar herunter.
+Du solltest sowas sehen wie:
+```
+java version "17.x.x"
+```
 
-ODER
+---
 
-Paper (leistungsstärker):
-Gehe auf https://papermc.io/downloads
-Lade die neueste .jar herunter.
+## 📂 Minecraft Server einrichten
 
-Erstelle auf deinem PC einen Ordner, z. B. MinecraftServer
+1. Erstelle einen neuen Ordner, z. B. `C:\MinecraftServer`
+2. Lade den Server herunter – empfohlen ist **Paper** für bessere Leistung:
 
-Lege die .jar in diesen Ordner
+👉 [https://papermc.io/downloads](https://papermc.io/downloads)
 
-🚀 Schritt 3: Server starten
-Öffne ein Terminal (CMD oder Bash) im Ordner.
+Wähle Version `1.20.4` oder aktueller → "Download"  
+Benenne die heruntergeladene `.jar` Datei in `server.jar` um  
+Speichere sie in deinen neuen Ordner.
 
-Starte mit:
+---
 
-bash:
+## ▶️ Startskript erstellen
+
+1. Öffne den Ordner `C:\MinecraftServer`
+2. Erstelle eine neue Textdatei und nenne sie: `start.bat`
+3. Rechtsklick → Bearbeiten und folgendes einfügen:
+
+```bat
+@echo off
 java -Xmx2G -Xms1G -jar server.jar nogui
-(Passe Xmx = max RAM, Xms = min RAM)
+pause
+```
 
-Es erscheint eula.txt. Öffne es und ändere:
+💡 Du kannst `2G` anpassen, je nachdem wie viel RAM du geben willst.
 
-txt:
+4. Speichern und schließen
+
+---
+
+## 🚀 Server das erste Mal starten
+
+Doppelklicke auf `start.bat`
+
+Der Server startet kurz und beendet sich direkt – Grund: Du musst der EULA zustimmen.
+
+### EULA akzeptieren
+
+1. Öffne die Datei `eula.txt`
+2. Ändere:
+```
 eula=false
-zu
-txt:
+```
+zu:
+```
 eula=true
-Starte den Server erneut mit dem gleichen Befehl.
+```
 
-🌐 Schritt 4: Portfreigabe (Router-Einstellungen)
-Damit andere über das Internet joinen können:
+3. Speichern und nochmal `start.bat` doppelklicken
 
-Öffne deinen Router (Browser):
-z. B. http://192.168.178.1 (Fritzbox), http://192.168.1.1 usw.
+---
 
-Logge dich ein (meist „admin“ und Passwort).
-Gehe zu Portfreigabe oder NAT/Port-Forwarding
-Erstelle eine neue Freigabe:
+## 🌐 Portfreigabe im Router
 
-Protokoll: TCP (oder TCP + UDP)
-Port extern & intern: 25565
-Zielgerät: Dein PC / IP-Adresse (z. B. 192.168.178.25)
-Name: „Minecraft Server“
-Speichern
+Damit andere Spieler über das Internet beitreten können:
 
-🌍 Schritt 5: Öffentlich joinen
-Gib anderen deine öffentliche IP-Adresse:
-Siehe https://www.wieistmeineip.de
+1. Öffne deinen Router im Browser (z. B. `http://fritz.box`)
+2. Gehe zu **Portfreigaben** oder **NAT / Portweiterleitung**
+3. Erstelle eine neue Freigabe:
 
-Spieler verbinden mit:
+   - **Port extern**: 25565  
+   - **Port intern**: 25565  
+   - **Protokoll**: TCP (ggf. auch UDP)  
+   - **Ziel-IP**: lokale IP deines Rechners (z. B. 192.168.178.45)
 
-text
-DEINE-IP:25565
+4. Speichern und ggf. Router neustarten
 
-text
-192.168.x.x:25565
+### Eigene IP-Adresse herausfinden
 
-🛡️ Empfehlung: Firewall erlauben
-Falls andere nicht joinen können:
+Drücke `Win + R`, tippe `cmd`, dann:
+```cmd
+ipconfig
+```
 
-Öffne die Windows Firewall (oder deine Linux-Firewall)
-Erlaube eingehende Verbindungen für java.exe bzw. den Port 25565
+Suche nach deiner lokalen IPv4-Adresse, z. B. `192.168.178.45`
 
-🧠 Optional: Server anpassen
-In der Datei server.properties kannst du alles konfigurieren:
+### Öffentliche IP anzeigen
 
-z. B. motd, gamemode, difficulty, pvp, max-players, white-list etc.
+🔗 [https://www.wieistmeineip.de](https://www.wieistmeineip.de)
+
+---
+
+## ⚙️ Server konfigurieren
+
+Öffne `server.properties` mit dem Editor, um z. B. Folgendes zu ändern:
+
+```properties
+motd=Mein Minecraft Server
+gamemode=survival
+difficulty=normal
+max-players=10
+white-list=true
+online-mode=true
+```
+
+Speichern → Server neu starten
+
+---
+
+## 🔗 Nützliche Links
+
+| Beschreibung                 | Link |
+|-----------------------------|------|
+| Java 17 (Oracle Archiv)     | https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html |
+| Minecraft Server (Vanilla)  | https://www.minecraft.net/de-de/download/server |
+| PaperMC Server              | https://papermc.io/downloads |
+| Öffentliche IP anzeigen     | https://www.wieistmeineip.de |
+| Fritzbox Oberfläche         | http://fritz.box |
+
+---
+
+## ✅ Fertig!
+
+Dein Server läuft jetzt unter Windows! 🎉 Freunde können über deine öffentliche IP auf Port `25565` beitreten. Beispiel:
+
+```text
+123.45.67.89:25565
+```
+
+---
+
+## 📜 Zusammenfassung des Startskripts
+
+```bat
+@echo off
+java -Xmx2G -Xms1G -jar server.jar nogui
+pause
+```
+
+RAM-Zuweisung kannst du nach Wunsch erhöhen, z. B. `-Xmx4G`
+
+---
+
+## 🧠 Tipps
+
+- Paper läuft schneller und stabiler als der Vanilla-Server
+- Immer Backups machen, bevor du Änderungen machst
+- Admins legst du in der Datei `ops.json` fest
+- Nur bestimmte Spieler erlauben? Nutze `white-list=true`
+
+---
+
+## ☕ Viel Spaß beim Zocken!
+
+Wenn dir dieses Projekt hilft, gib ihm gerne einen ⭐ auf GitHub 😊
